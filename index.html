@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Practice</title>
+  <meta name="description" content="A calm piano practice timer that only counts time you are actually playing.">
+  <meta name="theme-color" content="#0d0f13">
+  <meta name="color-scheme" content="dark">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Practice">
+  <meta name="format-detection" content="telephone=no">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="app" id="app" data-status="ready">
+    <header class="top">
+      <button class="logo" id="logo" type="button" aria-label="Practice (long-press for detection details)">
+        <svg class="logo-mark" viewBox="0 0 32 32" aria-hidden="true">
+          <rect x="3" y="5" width="26" height="22" rx="6" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 5v13M20 5v13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          <rect x="10" y="5" width="4" height="10" rx="1.5" fill="currentColor"/>
+          <rect x="18" y="5" width="4" height="10" rx="1.5" fill="currentColor"/>
+        </svg>
+        <span>Practice</span>
+      </button>
+      <dl class="totals">
+        <div><dt>Today</dt><dd id="today">0m</dd></div>
+        <div><dt>This week</dt><dd id="week">0m</dd></div>
+      </dl>
+    </header>
+
+    <main class="stage">
+      <div class="dial" id="dial">
+        <div class="halo" aria-hidden="true"></div>
+        <svg class="ring" viewBox="0 0 200 200" aria-hidden="true">
+          <circle class="ring-track" cx="100" cy="100" r="92"/>
+          <circle class="ring-fill" id="ringFill" cx="100" cy="100" r="92"/>
+        </svg>
+        <div class="readout">
+          <div class="status" id="status" role="status" aria-live="polite">
+            <span class="dot" aria-hidden="true"></span><span id="statusText">Ready</span>
+          </div>
+          <div class="time" id="time" aria-label="Active playing time">0:00</div>
+          <div class="sub" id="goalText">No goal set</div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="controls">
+      <button class="btn ghost" id="resetBtn" type="button" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.6-5.9M4 4v4.5h4.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Reset</span>
+      </button>
+      <button class="btn primary" id="startBtn" type="button">
+        <svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.4-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z" fill="currentColor"/></svg>
+        <svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1.5" fill="currentColor"/><rect x="13.5" y="5" width="4" height="14" rx="1.5" fill="currentColor"/></svg>
+        <span id="startLabel">Start</span>
+      </button>
+      <button class="btn ghost" id="goalBtn" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>
+        <span id="goalLabel">Goal</span>
+      </button>
+    </footer>
+  </div>
+
+  <!-- Goal picker -->
+  <div class="sheet" id="goalSheet" hidden>
+    <div class="sheet-backdrop" data-close></div>
+    <div class="sheet-panel" role="dialog" aria-modal="true" aria-labelledby="goalTitle">
+      <div class="sheet-grip" aria-hidden="true"></div>
+      <h2 id="goalTitle">Practice goal</h2>
+      <p class="sheet-hint">Counts only time spent actually playing.</p>
+      <div class="presets" id="presets"></div>
+      <div class="custom">
+        <span class="custom-label">Custom</span>
+        <div class="stepper">
+          <button type="button" class="step" id="stepDown" aria-label="Less">−</button>
+          <output id="customValue">25</output><span class="unit">min</span>
+          <button type="button" class="step" id="stepUp" aria-label="More">+</button>
+        </div>
+        <button type="button" class="btn small primary" id="customSet">Set</button>
+      </div>
+      <button type="button" class="link" id="noGoal">No goal</button>
+    </div>
+  </div>
+
+  <!-- Detection details: long-press the logo -->
+  <aside class="debug" id="debug" hidden aria-label="Detection details">
+    <div class="debug-head">
+      <strong>Detection</strong>
+      <span id="dbgState">idle</span>
+      <button type="button" class="link" id="dbgClose">Close</button>
+    </div>
+    <canvas id="dbgSpark" width="600" height="90"></canvas>
+    <div class="debug-bars" id="dbgBars"></div>
+    <div class="debug-metrics" id="dbgMetrics"></div>
+  </aside>
+
+  <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+  <div class="toast" id="toast" role="alert" hidden></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/detector.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
