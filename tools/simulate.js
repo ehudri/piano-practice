@@ -357,6 +357,20 @@ const SCENARIOS = [
     },
   },
   {
+    id: 'play-then-mash', expect: 'count', tolerance: 6,
+    desc: 'Ode, then 25 s of two-handed banging (should stop counting soon)',
+    build(out, rng) {
+      let t = perform(out, LEAD, odeEvents(true), 96, rng);
+      const end = t;
+      for (; t < end + 25; t += 0.12 + 0.25 * rng()) {
+        const base = rng.int(30, 90);
+        for (let i = 0; i < rng.int(1, 4); i++) addPianoNote(out, t, base + rng.int(0, 5), 0.2, 0.2, rng);
+      }
+      out.soundEnd = 0;
+      return [[LEAD, end]];
+    },
+  },
+  {
     id: 'random-notes', expect: 'reject',
     desc: 'Random single notes over 4 octaves, random timing',
     build(out, rng) {
@@ -530,7 +544,7 @@ function main() {
       if (wavDir && seed === 1) writeWav(path.join(wavDir, `${sc.id}.wav`), r.audio);
       const ok =
         sc.expect === 'count'
-          ? Math.abs(r.counted - r.expected) <= Math.max(3, 0.12 * r.expected)
+          ? Math.abs(r.counted - r.expected) <= (sc.tolerance || Math.max(3, 0.12 * r.expected))
           : r.counted <= 2;
       if (!ok) failures++;
       const a = r.acc;
@@ -546,4 +560,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { SCENARIOS, render, run };
+module.exports = { SCENARIOS, render, run, addPianoNote, perform, odeEvents, LEAD };

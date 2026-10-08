@@ -111,14 +111,15 @@ Common adjustments:
 | …and **Tonality** is low | `tuning R` is low (out-of-tune piano?) or `stable` is low | lower `scores.tonality.tuning` to `[0.2, 0.5]`, or `scores.tonalityGate` to `[0.4, 0.65]` |
 | …and **Activity** is low | very slow pieces | lower `scores.onsetRate` to `[0.1, 0.3]` |
 | …in a quiet or distant setup | `level` close to `floor` | lower `level.soundMarginDb` (e.g. 6) |
-| Atonal/chromatic music isn't counted | **Key** low and **Melody** low | lower `scores.melody.range`, or reduce `scores.key.outOfKeyRate` strictness by raising it |
+| Chromatic or atonal music isn't counted | **Key** and **Melody** both low | raise `scores.key.outOfKeyRate` (tolerates more out-of-key notes), or lower `scores.melody.range` |
 | Mashing / noodling still counts | **Key** or **Rhythm** high during mashing | raise `state.enterScore` / `exitScore`, lower `scores.key.outOfKeyRate` |
 | Counting stops during page turns | `since sound` exceeds the grace | raise `state.pauseGraceSec` |
 | Clock keeps running too long after you stop | | lower `state.pauseGraceSec` |
 
 **Offline check:** after changing thresholds, `node tools/simulate.js` runs
-17 synthetic scenarios, including slow and hesitant scales, two-hand pieces
-with pedal, chords, fast runs, a chromatic exercise, pauses, random notes,
+18 synthetic scenarios, including slow and hesitant scales, two-hand pieces
+with pedal, chords, fast runs, a chromatic exercise, pauses, playing that turns
+into mashing, random notes,
 clusters, two-handed banging, synthetic speech, clapping, a held chord, and
 silence. It prints how many seconds each one was credited. Use
 `--trace <scenario>` for per-second sub-scores, `--seeds 3` for more random
