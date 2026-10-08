@@ -99,8 +99,8 @@
       // Rhythmic regularity: share of successive inter-onset intervals in simple ratios.
       rhythm: {
         range: [0.4, 0.8],
-        ratios: [1, 2, 0.5, 1.5, 2 / 3],
-        tolerance: 0.08,              // relative
+        ratios: [1, 2, 0.5],          // equal, double, half (dotted ratios made random timing look regular)
+        tolerance: 0.07,              // relative
       },
 
       // Score = strongest of (key, melody) + a little of the other + rhythm.
@@ -115,7 +115,8 @@
     state: {
       enterScore: 0.55,       // start counting when the smoothed score rises above this
       exitScore: 0.4,         // stop counting when it falls below this
-      minNotesToEnter: 4,     // pitched notes needed in the window before counting starts
+      minNotesToEnter: 6,     // pitched notes needed in the window before counting starts…
+      minSoundSec: 4,         // …after at least this long of continuous sound (credited back)
       pauseGraceSec: 3.5,     // silences shorter than this keep counting (page turns, repeats)
       trimLongPauses: true,   // a longer silence is not counted at all (grace is taken back)
       retroCreditMaxSec: 7,   // on entering "playing", credit the warm-up already heard (max)

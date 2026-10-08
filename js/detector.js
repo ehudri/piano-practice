@@ -706,7 +706,12 @@
       const gap = t - this.lastSoundT;
       let credit = 0;
       if (this.state === 'idle') {
-        if (this.score >= st.enterScore && this.pitchedNoteCount >= st.minNotesToEnter && gap <= st.pauseGraceSec) {
+        if (
+          this.score >= st.enterScore &&
+          this.pitchedNoteCount >= st.minNotesToEnter &&
+          t - this.runStartT >= st.minSoundSec &&
+          gap <= st.pauseGraceSec
+        ) {
           this.state = 'playing';
           // Credit the warm-up the window needed to become confident.
           credit = Math.max(0, Math.min(t - this.runStartT, t - this.lastExitT, st.retroCreditMaxSec));

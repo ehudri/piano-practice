@@ -63,8 +63,9 @@ Tips:
 - **Reset** finishes the session and adds it to your totals. An unfinished session
   is kept if the app is closed. It resumes the same day, and is filed into
   history on a later day.
-- The first ~4–6 s of playing are needed to be sure. That time is added back
-  once playing is recognised, so nothing is lost.
+- It needs ~4–6 s of playing to be sure. That warm-up is added back once
+  playing is recognised, so the clock may jump forward a few seconds. Nothing
+  is lost.
 
 ## How detection works
 
